@@ -5,6 +5,10 @@ name = "pypi"
 
 [packages]
 django = "*"
+dj-database-url = "*"
+fontawesomefree = "*"
+python-decouple = "*"
+django-environ = "*"
 
 [dev-packages]
 

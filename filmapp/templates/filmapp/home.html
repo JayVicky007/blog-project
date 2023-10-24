@@ -20,7 +20,7 @@
                         {% endif %}
                         <h2 class="blog-title">{{ blog.title }}</h2>
                         <p class="blog-meta">Posted on {{ blog.created_at|date:"F d, Y" }} | by <a href="{% url 'filmapp:author_posts' author_id=blog.author.id %}">{{ blog.author.username }}</a> </p>
-                        {{ blog.content|slice_and_ellipsis:200 }}<a href="{% url 'filmapp:blog_detail' pk=blog.id %}">[Read More]</a>
+                        {{ blog.content|slice_and_ellipsis:200 }}<a href="{% url 'filmapp:blog_details' pk=blog.id %}">[Read More]</a>
                     </div>
                 </div>
                 {% if forloop.counter|divisibleby:3 %} <!-- Open a new row after every 3 columns -->

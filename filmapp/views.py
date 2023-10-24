@@ -117,7 +117,7 @@ def logout_user(request):
     logout(request)
     return redirect('filmapp:login')
 
-def blog_detail(request, pk):
+def blog_details(request, pk):
     blog = Blog.objects.get(pk=pk)
     return render(request, "filmapp/blog_details.html", {"blog": blog})
 

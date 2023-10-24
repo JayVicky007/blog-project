@@ -6,7 +6,7 @@
     <h1 class="text-center">Posts by {{ author.username }}</h1>
     <ul class="list-group text-center">
         {% for post in author_posts %}
-            <li class="list-group-item"><a href="{% url 'filmapp:blog_detail' pk=post.pk %}">{{ post.title }}</a></li>
+            <li class="list-group-item"><a href="{% url 'filmapp:blog_details' pk=post.pk %}">{{ post.title }}</a></li>
         {% empty %}
             <p>No posts found for {{ author.username }}.</p>
         {% endfor %}

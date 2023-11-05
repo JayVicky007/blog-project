@@ -16,8 +16,6 @@ urlpatterns = [
     path('author/<int:author_id>/', views.author_posts, name='author_posts'),
     path('contact/', views.contact, name='contact'),
     path('search/', views.search, name='search'),
-    
-
 ]
 
 if settings.DEBUG:

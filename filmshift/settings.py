@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'filmapp',
-    'fontawesomefree'
+    'fontawesomefree',
 ]
 
 MIDDLEWARE = [
@@ -82,13 +82,24 @@ WSGI_APPLICATION = 'filmshift.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': config('DATABASE_URL'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': config('DATABASE_URL'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'filmshiftdatabase_6cn9',
+        'USER': 'filmshiftdatabase_6cn9_user',
+        'PASSWORD': 'RE5IWpESiJ6Hezjxsu3FspcgusQSfpjh',
+        'HOST': 'dpg-cl4dm9pnovjs73c2vk3g-a.oregon-postgres.render.com',
+        'PORT': '5432',
     }
 }
-
+# postgres://:@/
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

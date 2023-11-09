@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
+
 import os
 
 
@@ -19,19 +19,24 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+import environ
+
+env = environ.Env()
+
+environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-MEDIA_URL='media/images/'
+MEDIA_URL='media/'
 
 MEDIA_ROOT=os.path.join(BASE_DIR, 'C:/Users/Jay Vicky/Django_Projects/blog_project/media/images')
 
@@ -82,24 +87,41 @@ WSGI_APPLICATION = 'filmshift.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': config('DATABASE_URL'),
-#     }
-# }
+# Local Server
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.qlite3',
+    }
+}
+'''
 
+# Render Server
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'filmshiftdatabase_6cn9',
-        'USER': 'filmshiftdatabase_6cn9_user',
-        'PASSWORD': 'RE5IWpESiJ6Hezjxsu3FspcgusQSfpjh',
-        'HOST': 'dpg-cl4dm9pnovjs73c2vk3g-a.oregon-postgres.render.com',
-        'PORT': '5432',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
+
     }
 }
+'''
 # postgres://:@/
+
+
+import dj_database_url
+
+DATABASES = {
+
+    'default': dj_database_url.parse(env('DATABASE_URL'))
+
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -136,6 +158,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

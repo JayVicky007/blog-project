@@ -1,0 +1,12 @@
+# render.yaml
+
+services:
+  - name: web
+    plan: auto
+    env: python
+
+buildCommand: python manage.py collectstatic --noinput
+
+staticMounts:
+  - source: C:\Users\Jay Vicky\Django_Projects\blog_project\staticfiles
+    destination: /static

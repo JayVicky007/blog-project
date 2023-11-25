@@ -7,8 +7,34 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <form class="card-form" method="post">
+                {% csrf_token %}
                 <h2 class="input" id="header" style="margin-top: 20px; text-align: center;">Sign up for an account</h2>
                 {{ form.media }}
+
+                <!-- Display form errors -->
+                {% if form.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Oops! There were some errors:</strong>
+                        <ul>
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li>{{ field.label }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <!-- Display non-field errors -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                            <strong>{{ error }}</strong><br>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            
+                <!-- Rest of the form fields -->
                 <div class="form-group text-center">
                     <div class="text-center">
                         <label for="{{ form.username.id_for_label }}">Username:</label>
@@ -41,7 +67,6 @@
                         {{ form.password2 }}
                     </div>
                 </div>
-                {% csrf_token %}
                 <div class="action text-center" style="margin-top: 5px;">
                     <button class="action-button btn btn-primary" type="submit">Register Now</button>
                 </div>

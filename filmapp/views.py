@@ -90,13 +90,21 @@ def create_blog(request):
 
 def register(request):
     form = RegistrationForm()
+    password_errors = None
+
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('filmapp:login')
+        else:
+            print("All Form Errors:", form.errors)
+            password_errors = form.errors.get('password1')
+            print("Password Errors:", password_errors)
+
     return render(request, 'filmapp/auth/register.html', {'form': form})
+
 
 def login_view(request):
     if request.method == 'POST':

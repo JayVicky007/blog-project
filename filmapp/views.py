@@ -4,9 +4,10 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Blog
-from .forms import BlogForm, RegistrationForm, ContactForm
+from .forms import BlogForm, RegistrationForm, ContactForm, CommentForm
 from django.core.paginator import Paginator
 from django.db.models import Q
+from .forms import CommentForm
 
 
 def home(request):
@@ -144,6 +145,39 @@ def author_posts(request, author_id):
     author_posts = Blog.objects.filter(author=author)
 
     return render(request, 'filmapp/author_posts.html', {'author': author, 'author_posts': author_posts})
+
+
+def blog_details(request, pk):
+    blog = Blog.objects.get(pk=pk)
+    comment_form = CommentForm()  # Create an instance of the CommentForm
+
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.blog = blog
+            comment.user = request.user  # Assuming users are logged in when commenting
+            comment.save()
+            return redirect('filmapp:blog_details', pk=pk)
+
+    return render(request, "filmapp/blog_details.html", {"blog": blog, "comment_form": comment_form})
+
+
+def add_comment(request, pk):
+    blog = get_object_or_404(Blog, pk=pk)
+    
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.blog = blog
+            comment.user = request.user  # Assuming users are logged in when commenting
+            comment.save()
+            return redirect('filmapp:blog_details', pk=pk)
+    else:
+        return redirect('filmapp:blog_details', pk=pk)  # Redirect back to blog details if the form is invalid
+
+
 
 
 

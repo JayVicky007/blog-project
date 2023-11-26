@@ -20,7 +20,50 @@
                     </p>
                     {{ blog.content }}
                 </div>
+
+    <!-- Comments Section -->
+<div class="comments-section">
+    <h3>Comments</h3>
+    {% if blog.comments.all %}
+        <div class="comment-list">
+            {% for comment in blog.comments.all %}
+                <div class="comment">
+                    <div class="comment-header">
+                        <strong> <a href="{% url 'filmapp:author_posts' author_id=blog.author.id %}">{{ comment.user.username }}</a></strong> - {{ comment.created_at|date:"F d, Y" }}
+                    </div>
+                    <div class="comment-body">
+                        {{ comment.text }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-comments">No comments yet. Be the first to comment!</p>
+    {% endif %}
+<!-- Comment Form -->
+{% if user.is_authenticated %}
+    <div class="comment-form">
+        <h4>Add a Comment</h4>
+        <form method="post" action="{% url 'filmapp:add_comment' blog.id %}">
+            {% csrf_token %}
+            {{ comment_form.non_field_errors }}
+
+            <!-- Render each field manually -->
+            <div class="form-group">
+                {{ comment_form.text.errors }}
+                {{ comment_form.text }}
             </div>
+
+            <!-- Add Comment button -->
+            <button type="submit">Add Comment</button>
+        </form>
+    </div>
+{% else %}
+    <p class="login-message">Please <a href="{% url 'filmapp:login' %}">login</a> to add comments.</p>
+{% endif %}
+</div>
+        
+</div>
     
     
         <!-- Sidebar Column -->
@@ -52,9 +95,7 @@
             </ul>
         </div>
     </div>
-        
 
-    
 
 <style>
     /* General styles */
@@ -101,6 +142,63 @@
         border-radius: 5px;
         width: 500px; /* Set a fixed width */
         height: 300px; /* Set a fixed height */
+    }
+
+    /* Styles for Comments Section */
+    .comments-section {
+        margin-top: 20px;
+        border-top: 1px solid #ccc;
+        padding-top: 20px;
+    }
+
+    .comment-list {
+        margin-bottom: 20px;
+    }
+
+    .comment {
+        border: 1px solid #eee;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .comment-header {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .comment-body {
+        margin-bottom: 10px;
+    }
+
+    .no-comments {
+        font-style: italic;
+        color: #888;
+    }
+
+    .comment-form {
+        margin-top: 20px;
+    }
+
+    .login-message {
+        font-style: italic;
+        color: #888;
+    }
+
+    /* Comment form styles */
+    form {
+        margin-top: 20px;
+    }
+
+    input[type="submit"] {
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
     }
 
 </style>

@@ -16,6 +16,8 @@ urlpatterns = [
     path('author/<int:author_id>/', views.author_posts, name='author_posts'),
     path('contact/', views.contact, name='contact'),
     path('search/', views.search, name='search'),
+    path('blog/<int:pk>/', views.blog_details, name='blog_details'),
+    path('blog/<int:pk>/comment/', views.add_comment, name='add_comment'),
 ]
 
 if settings.DEBUG:

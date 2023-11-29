@@ -18,6 +18,7 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('blog/<int:pk>/', views.blog_details, name='blog_details'),
     path('blog/<int:pk>/comment/', views.add_comment, name='add_comment'),
+    path('blog/<int:pk>/edit/', views.edit_blog, name='edit_blog'),
 ]
 
 if settings.DEBUG:

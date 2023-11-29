@@ -100,14 +100,15 @@ def register(request):
             login(request, user)
             return redirect('filmapp:login')
         else:
-            print("All Form Errors:", form.errors)
             password_errors = form.errors.get('password1')
-            print("Password Errors:", password_errors)
 
     return render(request, 'filmapp/auth/register.html', {'form': form})
 
 
 def login_view(request):
+    form = AuthenticationForm()
+    password_errors = None
+
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -117,10 +118,10 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 return redirect('filmapp:home') 
-    else:
-        form = AuthenticationForm()
-    
-    return render(request, 'filmapp/auth/login.html', {'form': form})
+        else:
+            password_errors = form.errors.get('password')
+
+    return render(request, 'filmapp/auth/login.html', {'form': form, 'password_errors': password_errors})
 
 def logout_user(request):
     logout(request)
@@ -178,6 +179,18 @@ def add_comment(request, pk):
         return redirect('filmapp:blog_details', pk=pk)  # Redirect back to blog details if the form is invalid
 
 
+def edit_blog(request, pk):
+    blog = get_object_or_404(Blog, pk=pk)
+
+    if request.method == 'POST':
+        form = BlogForm(request.POST, request.FILES, instance=blog)
+        if form.is_valid():
+            form.save()
+            return redirect('filmapp:blog_details', pk=pk)
+    else:
+        form = BlogForm(instance=blog)
+
+    return render(request, 'filmapp/edit_blog.html', {'form': form, 'blog': blog})
 
 
 

@@ -1,72 +1,72 @@
 {% extends "filmapp/base.html" %}
-
 {% load static %}
 
-    {% block content %}
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 main-content">
-                <div class="blog-container">
-                    {% if blog.image %}
-                    <div class="text-center"> <!-- Center-align the image -->
-                        <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-image">
-                    </div>
-                    {% endif %}
-                    <h2 class="blog-title text-center">{{ blog.title }}</h2> <!-- Center-align the title -->
-                    <p class="blog-meta text-center"> <!-- Center-align the meta information -->
-                        Posted on {{ blog.created_at|date:"F d, Y" }} | by
-                        <a href="{% url 'filmapp:author_posts' author_id=blog.author.id %}">{{ blog.author.username }}</a>
-                    </p>
-                    {{ blog.content }}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 main-content">
+            <div class="blog-container">
+                {% if blog.image %}
+                <div class="text-center">
+                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-image">
                 </div>
+                {% endif %}
+                <h2 class="blog-title text-center">{{ blog.title }}</h2>
+                <p class="blog-meta text-center">
+                    Posted on {{ blog.created_at|date:"F d, Y" }} | by
+                    <a href="{% url 'filmapp:author_posts' author_id=blog.author.id %}">{{ blog.author.username }}</a>
+                </p>
+                {{ blog.content }}
 
-    <!-- Comments Section -->
-<div class="comments-section">
-    <h3>Comments</h3>
-    {% if blog.comments.all %}
-        <div class="comment-list">
-            {% for comment in blog.comments.all %}
-                <div class="comment">
-                    <div class="comment-header">
-                        <strong> <a href="{% url 'filmapp:author_posts' author_id=blog.author.id %}">{{ comment.user.username }}</a></strong> - {{ comment.created_at|date:"F d, Y" }}
-                    </div>
-                    <div class="comment-body">
-                        {{ comment.text }}
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p class="no-comments">No comments yet. Be the first to comment!</p>
-    {% endif %}
-<!-- Comment Form -->
-{% if user.is_authenticated %}
-    <div class="comment-form">
-        <h4>Add a Comment</h4>
-        <form method="post" action="{% url 'filmapp:add_comment' blog.id %}">
-            {% csrf_token %}
-            {{ comment_form.non_field_errors }}
-
-            <!-- Render each field manually -->
-            <div class="form-group">
-                {{ comment_form.text.errors }}
-                {{ comment_form.text }}
+                <!-- Add Edit Post link if user is authenticated and is the author -->
+                {% if user.is_authenticated and user == blog.author %}
+                <a href="{% url 'filmapp:edit_blog' pk=blog.pk %}">Edit Post</a>
+                {% endif %}            
+            </div>
             </div>
 
-            <!-- Add Comment button -->
-            <button type="submit">Add Comment</button>
-        </form>
-    </div>
-{% else %}
-    <p class="login-message">Please <a href="{% url 'filmapp:login' %}">login</a> to add comments.</p>
-{% endif %}
-</div>
-        
-</div>
-    
-    
-        <!-- Sidebar Column -->
+            <!-- Comments Section -->
+            <div class="comments-section">
+                <h3>Comments</h3>
+                {% if blog.comments.all %}
+                <div class="comment-list">
+                    {% for comment in blog.comments.all %}
+                    <div class="comment">
+                        <div class="comment-header">
+                            <strong><a href="{% url 'filmapp:author_posts' author_id=blog.author.id %}">{{ comment.user.username }}</a></strong> - {{ comment.created_at|date:"F d, Y" }}
+                        </div>
+                        <div class="comment-body">
+                            {{ comment.text }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="no-comments">No comments yet. Be the first to comment!</p>
+                {% endif %}
+
+                <!-- Comment Form -->
+                {% if user.is_authenticated %}
+                <div class="comment-form">
+                    <h4>Add a Comment</h4>
+                    <form method="post" action="{% url 'filmapp:add_comment' blog.id %}">
+                        {% csrf_token %}
+                        {{ comment_form.non_field_errors }}
+                        <div class="form-group">
+                            {{ comment_form.text.errors }}
+                            {{ comment_form.text }}
+                        </div>
+                        <button type="submit">Add Comment</button>
+                    </form>
+                </div>
+                {% else %}
+                <p class="login-message">Please <a href="{% url 'filmapp:login' %}">login</a> to add comments.</p>
+                {% endif %}
+            </div>
+
+
+
+<!-- Sidebar Column -->
         <div class="col-md-2 p-3" style="background-color: #f5ebeb; color: #888585; border-right: 1px solid #ccc; box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.1);">
             <ul class="list-unstyled">
                 {% if user.is_authenticated %}

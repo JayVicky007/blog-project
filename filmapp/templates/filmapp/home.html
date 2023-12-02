@@ -33,14 +33,14 @@
                 <span class="step-links">
                     <!-- Previous page link -->
                     {% if page.has_previous %}
-                        <a href="?page=1&q={{ query }}" class="btn btn-primary btn-sm">&laquo; First</a>
-                        <a href="?page={{ page.previous_page_number }}&q={{ query }}" class="btn btn-primary btn-sm">Previous</a>
+                        <a href="?page=1" class="btn btn-primary btn-sm">&laquo; First</a>
+                        <a href="?page={{ page.previous_page_number }}" class="btn btn-primary btn-sm">Previous</a>
                     {% endif %}
 
                     <!-- Next page link -->
                     {% if page.has_next %}
-                        <a href="?page={{ page.next_page_number }}&q={{ query }}" class="btn btn-primary btn-sm">Next</a>
-                        <a href="?page={{ page.paginator.num_pages }}&q={{ query }}" class="btn btn-primary btn-sm">Last &raquo; </a>
+                        <a href="?page={{ page.next_page_number }}" class="btn btn-primary btn-sm">Next</a>
+                        <a href="?page={{ page.paginator.num_pages }}" class="btn btn-primary btn-sm">Last &raquo;</a>
                     {% endif %}
                 </span>
 
@@ -51,14 +51,6 @@
                 <span class="total-pages">
                     of ({{ page.paginator.num_pages }}) pages
                 </span>
-            </div>
-
-            <!-- Search Bar -->
-            <div class="pagination mt-2">
-                <form method="get" action="">
-                    <input type="text" name="input_page" placeholder="Go to Page" class="form-control" style="display: inline-block;">
-                    <button type="submit" class="btn btn-primary btn-sm" style="vertical-align: top;">Go</button>
-                </form>
             </div>
 
         </div>
@@ -90,6 +82,7 @@
         </li>
         {% endif %}
     </ul>
+    </div>
 
 
 </div>

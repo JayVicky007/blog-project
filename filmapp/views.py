@@ -14,13 +14,6 @@ def home(request):
     # Retrieve all blog posts
     all_blogs = Blog.objects.all().order_by('-created_at')
 
-    # Get the search query from the request's GET parameters
-    query = request.GET.get('q')
-
-    if query:
-        # Filter blog posts based on the search query
-        all_blogs = all_blogs.filter(title__icontains=query)
-
     # Set the number of blog posts to display per page
     blogs_per_page = 3
 
@@ -33,14 +26,7 @@ def home(request):
     # Get the Page object for the current page
     page = paginator.get_page(page_number)
 
-    # Get the input page number from the search query
-    input_page_number = request.GET.get('input_page')
-
-    if input_page_number:
-        # Redirect to the specified page number using the query parameter 'input_page'
-        return redirect(f'/?page={input_page_number}')
-
-    return render(request, 'filmapp/home.html', {'page': page, 'query': query})
+    return render(request, 'filmapp/home.html', {'page': page})
 
 
 def admin_posts(request):

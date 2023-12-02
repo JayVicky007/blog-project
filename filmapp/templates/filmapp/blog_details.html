@@ -11,7 +11,7 @@
                     <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-image">
                 </div>
                 {% endif %}
-                <h2 class="blog-title text-center">{{ blog.title }}</h2>
+                <h2 class="blog-title text-center">{{ blog.title|upper }}</h2>
                 <p class="blog-meta text-center">
                     Posted on {{ blog.created_at|date:"F d, Y" }} | by
                     <a href="{% url 'filmapp:author_posts' author_id=blog.author.id %}">{{ blog.author.username }}</a>

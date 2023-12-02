@@ -18,7 +18,7 @@
                         {% if blog.image %}
                         <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-image">
                         {% endif %}
-                        <a href="{% url 'filmapp:blog_details' pk=blog.id %}"><h2 class="blog-title custom-title">{{ blog.title }}</h2></a>
+                        <a href="{% url 'filmapp:blog_details' pk=blog.id %}"><h2 class="blog-title custom-title">{{ blog.title|upper }}</h2></a>
                         <p class="blog-meta">Posted on {{ blog.created_at|date:"F d, Y" }} | by <a href="{% url 'filmapp:author_posts' author_id=blog.author.id %}">{{ blog.author.username }}</a> </p>
                         {{ blog.content|slice_and_ellipsis:200 }}<a href="{% url 'filmapp:blog_details' pk=blog.id %}">[Read More]</a>
                     </div>
@@ -138,12 +138,6 @@
         font-weight: bold;
         color: #333; /* Adjust the color to your preference */
     }
-
-    .form-control {
-            padding: 5px; /* Adjust as needed */
-            display: block; /* Show the button as a block element */
-            width: 50%; /* Make button width fill its container */
-        }
 
     .pagination {
         margin-top: 20px; /* Adjust as needed */

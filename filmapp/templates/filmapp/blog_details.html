@@ -20,10 +20,16 @@
 
                 <!-- Add Edit Post link if user is authenticated and is the author -->
                 {% if user.is_authenticated and user == blog.author %}
-                <a href="{% url 'filmapp:edit_blog' pk=blog.pk %}">Edit Post</a>
+                <form method="get" action="{% url 'filmapp:edit_blog' pk=blog.pk %}">
+                    <button type="submit" class="btn btn-primary">Modify Post</button>
+                </form>
+                <form method="post" action="{% url 'filmapp:delete_blog' pk=blog.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete Post</button>
+                </form>
                 {% endif %}            
             </div>
-            </div>
+            
 
             <!-- Comments Section -->
             <div class="comments-section">
@@ -63,6 +69,7 @@
                 <p class="login-message">Please <a href="{% url 'filmapp:login' %}">login</a> to add comments.</p>
                 {% endif %}
             </div>
+        </div>
 
 
 
@@ -96,6 +103,7 @@
         </div>
     </div>
 
+</div>
 
 <style>
     /* General styles */
@@ -201,9 +209,13 @@
         background-color: #0056b3;
     }
 
+    button.btn-primary, button.btn-danger {
+        margin-top: 10px; /* Adjust as needed */
+        display: block; /* Show the button as a block element */
+        width: 100%; /* Make button width fill its container */
+    }
+
 </style>
     
     {% endblock %}
 
-</body>
-</html>

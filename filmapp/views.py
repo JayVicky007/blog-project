@@ -193,5 +193,15 @@ def edit_blog(request, pk):
     return render(request, 'filmapp/edit_blog.html', {'form': form, 'blog': blog})
 
 
+def delete_blog(request, pk):
+    blog = get_object_or_404(Blog, pk=pk)
+
+    if request.method == 'POST':
+        blog.delete()
+        return redirect('filmapp:home')  # Redirect to the home page after deleting the blog
+
+    return render(request, 'filmapp/delete_blog.html', {'blog': blog})
+
+
 
 

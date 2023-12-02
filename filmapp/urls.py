@@ -19,6 +19,7 @@ urlpatterns = [
     path('blog/<int:pk>/', views.blog_details, name='blog_details'),
     path('blog/<int:pk>/comment/', views.add_comment, name='add_comment'),
     path('blog/<int:pk>/edit/', views.edit_blog, name='edit_blog'),
+    path('delete/<int:pk>/', views.delete_blog, name='delete_blog'),    
 ]
 
 if settings.DEBUG:

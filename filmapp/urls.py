@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
-from django.conf import settings
-from django.conf.urls.static import static
+
 
 urlpatterns = [
 
@@ -19,8 +18,6 @@ urlpatterns = [
     path('blog/<int:pk>/', views.blog_details, name='blog_details'),
     path('blog/<int:pk>/comment/', views.add_comment, name='add_comment'),
     path('blog/<int:pk>/edit/', views.edit_blog, name='edit_blog'),
-    path('delete/<int:pk>/', views.delete_blog, name='delete_blog'),    
+    path('blog/<pk>/delete/', views.delete_blog, name='delete_blog'),    
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

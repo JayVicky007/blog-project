@@ -14,6 +14,13 @@ def home(request):
     # Retrieve all blog posts
     all_blogs = Blog.objects.all().order_by('-created_at')
 
+    # Get the search query from the request's GET parameters
+    query = request.GET.get('q')
+
+    if query:
+        # Filter blog posts based on the search query
+        all_blogs = all_blogs.filter(title__icontains=query)
+
     # Set the number of blog posts to display per page
     blogs_per_page = 3
 
@@ -26,7 +33,15 @@ def home(request):
     # Get the Page object for the current page
     page = paginator.get_page(page_number)
 
-    return render(request, 'filmapp/home.html', {'page': page})
+    # Get the input page number from the search query
+    input_page_number = request.GET.get('input_page')
+
+    if input_page_number:
+        # Redirect to the specified page number using the query parameter 'input_page'
+        return redirect(f'/?page={input_page_number}')
+
+    return render(request, 'filmapp/home.html', {'page': page, 'query': query})
+
 
 def admin_posts(request):
     # Retrieve only admin blog posts
@@ -62,6 +77,7 @@ def guest_posts(request):
 
     return render(request, 'filmapp/guest_posts.html', {'page': page})
 
+
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -73,6 +89,7 @@ def contact(request):
         form = ContactForm()
 
     return render(request, 'filmapp/contact.html', {'form': form})
+
 
 @login_required(login_url='filmapp:login')  # Add this decorator to require authentication.
 def create_blog(request):
@@ -123,13 +140,16 @@ def login_view(request):
 
     return render(request, 'filmapp/auth/login.html', {'form': form, 'password_errors': password_errors})
 
+
 def logout_user(request):
     logout(request)
     return redirect('filmapp:login')
 
+
 def blog_details(request, pk):
     blog = Blog.objects.get(pk=pk)
     return render(request, "filmapp/blog_details.html", {"blog": blog})
+
 
 def search(request):
     query = request.GET.get('q')  # Get the search query from the request's GET parameters
@@ -140,6 +160,7 @@ def search(request):
         results = Blog.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
 
     return render(request, 'filmapp/search_results.html', {'query': query, 'results': results})
+
 
 def author_posts(request, author_id):
     author = get_object_or_404(User, id=author_id)  # Retrieve the author by their User ID

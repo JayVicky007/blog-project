@@ -28,22 +28,39 @@
                 {% endfor %}
             </div>
             
-            <!-- Pagination controls -->
+            <!-- Pagination -->
             <div class="pagination mt-4">
                 <span class="step-links">
+                    <!-- Previous page link -->
                     {% if page.has_previous %}
-                    <a href="?page=1" class="btn btn-primary btn-sm">&laquo; First</a>
-                    <a href="?page={{ page.previous_page_number }}" class="btn btn-primary btn-sm">Previous</a>
+                        <a href="?page=1&q={{ query }}" class="btn btn-primary btn-sm">&laquo; First</a>
+                        <a href="?page={{ page.previous_page_number }}&q={{ query }}" class="btn btn-primary btn-sm">Previous</a>
                     {% endif %}
 
-                    <span class="current-page">{{ page.number }}</span>
-
+                    <!-- Next page link -->
                     {% if page.has_next %}
-                    <a href="?page={{ page.next_page_number }}" class="btn btn-primary btn-sm">Next</a>
-                    <a href="?page={{ page.paginator.num_pages }}" class="btn btn-primary btn-sm">Last &raquo;</a>
+                        <a href="?page={{ page.next_page_number }}&q={{ query }}" class="btn btn-primary btn-sm">Next</a>
+                        <a href="?page={{ page.paginator.num_pages }}&q={{ query }}" class="btn btn-primary btn-sm">Last &raquo; </a>
                     {% endif %}
                 </span>
+
+                <!-- Display the current page number -->
+                <span class="current-page">&nbsp;({{ page.number }})&nbsp;</span>
+
+                <!-- Display total number of pages -->
+                <span class="total-pages">
+                    of ({{ page.paginator.num_pages }}) pages
+                </span>
             </div>
+
+            <!-- Search Bar -->
+            <div class="pagination mt-2">
+                <form method="get" action="">
+                    <input type="text" name="input_page" placeholder="Go to Page" class="form-control" style="display: inline-block;">
+                    <button type="submit" class="btn btn-primary btn-sm" style="vertical-align: top;">Go</button>
+                </form>
+            </div>
+
         </div>
         
 <!-- Sidebar Column -->
@@ -121,6 +138,7 @@
     border-radius: 5px;
     display: block; /* Center-align the image horizontally */
     margin: 0 auto; /* Center-align the image horizontally */
+        }
 
     .custom-title {
         font-size: 15px; /* Adjust the font size as needed */
@@ -128,8 +146,14 @@
         color: #333; /* Adjust the color to your preference */
     }
 
-}
+    .form-control {
+            padding: 5px; /* Adjust as needed */
+            display: block; /* Show the button as a block element */
+            width: 50%; /* Make button width fill its container */
+        }
 
 
 </style>
+
+
 {% endblock %}
